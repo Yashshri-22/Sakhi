@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Gradient pink circular background -->
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="@color/pink_primary"
+                android:endColor="@color/pink_dark"
+                android:angle="45"/>
+        </shape>
+    </item>
+
+    <!-- Centered + icon -->
+    <item
+        android:drawable="@drawable/add_icon"
+        android:gravity="center"/>
+
+</layer-list>
