@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <!-- Background image -->
+        <ImageView
+            android:id="@+id/imgFeelingBg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_feeling"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Soft overlay for readability -->
+
+        <!-- Title -->
+
+        <!-- Track button -->
+
+        <!-- Feeling chips -->
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#66FFFFFF"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tvFeelingTitle"
+            android:layout_width="190dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="16dp"
+            android:text="How are you feeling today?"
+            android:textColor="#5E2B97"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnTrack"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.207" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTrack"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="12dp"
+            android:elevation="2dp"
+            android:text="Track Symptoms"
+            android:textAllCaps="false"
+            android:textColor="@color/pink_primary"
+            android:textSize="12sp"
+            app:backgroundTint="@android:color/white"
+            app:cornerRadius="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.061"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFeelingTitle"
+            app:layout_constraintVertical_bias="0.538"
+            app:strokeColor="@color/pink_primary"
+            app:strokeWidth="1dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/FeelingChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Good 😊" />
+
+            <TextView
+                style="@style/FeelingChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tired 😴" />
+
+            <TextView
+                style="@style/FeelingChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unwell 😞" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
