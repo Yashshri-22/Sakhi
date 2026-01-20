@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/imgHospital"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:tint="@color/purple_primary"
+            android:background="#F3E5F5"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtHospitalName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="City Care Hospital"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/imgHospital"
+            app:layout_constraintTop_toTopOf="@id/imgHospital"
+            app:layout_constraintEnd_toStartOf="@+id/icVerified"/>
+
+        <ImageView
+            android:id="@+id/icVerified"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_verified_badge"
+            app:tint="#4CAF50"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/txtHospitalName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtHospitalName" />
+
+        <TextView
+            android:id="@+id/txtDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2.5 km • Pimpri Chinchwad"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/txtHospitalName"
+            app:layout_constraintTop_toBottomOf="@id/txtHospitalName" />
+
+        <Button
+            android:id="@+id/btnViewDetails"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="View Details"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/btn_gradient_signup"
+            app:backgroundTint="@null"
+            app:layout_constraintTop_toBottomOf="@id/imgHospital"
+            app:layout_constraintStart_toStartOf="@id/txtHospitalName"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
