@@ -4,5 +4,6 @@
     <color name="pink_dark">#C94092</color>
     <color name="purple_primary">#664184</color>
     <color name="black">#FF000000</color>
+    <color name="nav_inactive">#9E9E9E</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        BottomNavHelper.setupBottomNav(this, R.id.navChat);
         rvChat = findViewById(R.id.rvChat);
         etMessage = findViewById(R.id.etMessage);
         btnSend = findViewById(R.id.btnSend);

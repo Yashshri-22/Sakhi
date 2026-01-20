@@ -48,7 +48,7 @@ public class NearbyCareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_care);
-
+        BottomNavHelper.setupBottomNav(this, R.id.navNearby);
         // 1. Initialize Views
         recyclerView = findViewById(R.id.recyclerViewHospitals);
         searchBar = findViewById(R.id.etSearch);
