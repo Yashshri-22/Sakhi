@@ -1,7 +1,9 @@
 package com.example.sakhi;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -12,21 +14,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ENABLE edge-to-edge (MANDATORY for transparency)
+        // Edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-
-        // TRANSPARENT system bars
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
 
-        // ICON COLOR (choose ONE)
         WindowInsetsControllerCompat controller =
                 new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
-
-        // false = white icons | true = dark icons
         controller.setAppearanceLightStatusBars(true);
         controller.setAppearanceLightNavigationBars(true);
 
         setContentView(R.layout.activity_main);
+
+        // 🔹 Buttons
+        MaterialButton btnLogin = findViewById(R.id.btn_login);
+        MaterialButton btnSignup = findViewById(R.id.btn_signup);
+
+        // Login click
+        btnLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        // Signup click
+        btnSignup.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
     }
 }

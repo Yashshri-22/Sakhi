@@ -86,7 +86,6 @@
             app:strokeColor="@color/pink_primary"
             app:strokeWidth="2dp" />
 
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
