@@ -60,5 +60,6 @@
     <string name="your_symptom_summary">Your Symptom Summary</string>
     <string name="highlighted_possible_conditions">Highlighted Possible Conditions</string>
     <string name="find_nearby_care">Find Nearby Care</string>
+    <string name="listen_to_your_body">Listen to your body</string>
 
 </resources>

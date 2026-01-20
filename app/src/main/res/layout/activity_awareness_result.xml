@@ -51,12 +51,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reminderToolbar" />
 
-    <!-- 🔹 Highlight Note -->
-
-    <!-- 🔹 Section Button -->
-
-    <!-- 🔹 Condition Card -->
-
     <TextView
         android:id="@+id/tvNote"
         android:layout_width="0dp"
