@@ -3,7 +3,9 @@ package com.example.sakhi;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import com.google.android.material.button.MaterialButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -14,7 +16,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Edge-to-edge
+        // 🔐 AUTO-LOGIN CHECK (FIRST THING)
+        if (SessionManager.isLoggedIn(this)) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
+
+        // Edge-to-edge UI
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setNavigationBarColor(Color.TRANSPARENT);
@@ -31,15 +40,13 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton btnSignup = findViewById(R.id.btn_signup);
 
         // Login click
-        btnLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
+        btnLogin.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, LoginActivity.class))
+        );
 
         // Signup click
-        btnSignup.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-            startActivity(intent);
-        });
+        btnSignup.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, SignupActivity.class))
+        );
     }
 }

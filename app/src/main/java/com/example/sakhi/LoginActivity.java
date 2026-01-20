@@ -6,8 +6,11 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.JsonObject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +25,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // ✅ AUTO-LOGIN CHECK
+        if (SessionManager.isLoggedIn(this)) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         etEmail = findViewById(R.id.etLoginEmail);
@@ -42,32 +53,49 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // Prepare Data
+            // Prepare Request Body
             JsonObject user = new JsonObject();
             user.addProperty("email", email);
             user.addProperty("password", password);
 
-            // Call API
+            // API Call
             SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
             Call<JsonObject> call = api.login(SUPABASE_KEY, "password", user);
 
             call.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        // Go to Main App
+
+                    if (response.isSuccessful() && response.body() != null) {
+
+                        // ✅ SAVE SESSION HERE
+                        String accessToken = response.body()
+                                .get("access_token").getAsString();
+                        String refreshToken = response.body()
+                                .get("refresh_token").getAsString();
+
+                        SessionManager.saveSession(LoginActivity.this, accessToken, refreshToken);
+
+                        Toast.makeText(LoginActivity.this,
+                                "Login Successful!", Toast.LENGTH_SHORT).show();
+
+                        // Go to Home
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
+
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login Failed. Check email/password.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,
+                                "Login Failed. Check email/password.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,
+                            "Network Error: " + t.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         });
