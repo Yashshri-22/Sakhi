@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,12 @@ public class RemainderActivity extends AppCompatActivity {
 
         // Button to open "Add Reminder" page
         Button btnAdd = findViewById(R.id.btnAddReminder);
+        ImageView btnBack = findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(v -> {
+            finish(); // standard Android back behavior
+        });
+
         btnAdd.setOnClickListener(v -> {
             startActivity(new Intent(RemainderActivity.this, AddRemainderActivity.class));
         });
