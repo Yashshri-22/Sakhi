@@ -57,5 +57,8 @@
     <string name="for_women_starting_small_business">For women starting small business...</string>
     <string name="every_3_months_10_00_am">Every 3 Months | 10:00 AM</string>
     <string name="health_check_reminders">Health Check Reminders</string>
+    <string name="your_symptom_summary">Your Symptom Summary</string>
+    <string name="highlighted_possible_conditions">Highlighted Possible Conditions</string>
+    <string name="find_nearby_care">Find Nearby Care</string>
 
 </resources>
