@@ -50,8 +50,10 @@
             app:tint="#D81B60" />
 
         <EditText
+            android:id="@+id/etLoginEmail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/black"
             android:background="@android:color/transparent"
             android:hint="@string/email_phone"
             android:paddingStart="12dp"
@@ -79,8 +81,10 @@
             app:tint="#D81B60" />
 
         <EditText
+            android:id="@+id/etLoginPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/black"
             android:background="@android:color/transparent"
             android:hint="@string/password"
             android:paddingStart="12dp"
@@ -138,6 +142,7 @@
             android:textColor="#000000" />
 
         <TextView
+            android:id="@+id/signupText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
