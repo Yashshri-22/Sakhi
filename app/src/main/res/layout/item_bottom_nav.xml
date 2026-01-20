@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@color/white"
@@ -12,6 +11,7 @@
 
     <!-- Home -->
     <LinearLayout
+        android:id="@+id/navHome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -19,22 +19,25 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/iconHome"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:src="@drawable/ic_home"
-            app:tint="@color/pink_dark"/>
+            app:tint="@color/nav_inactive"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/textHome"
             android:text="Home"
             android:textSize="12sp"
-            android:textColor="@color/pink_dark"
+            app:tint="@color/nav_inactive"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
     <!-- Survey -->
     <LinearLayout
+        android:id="@+id/navSurvey"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -42,22 +45,25 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/iconSurvey"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:src="@drawable/ic_survey"
-            app:tint="@color/pink_dark"/>
+            app:tint="@color/nav_inactive"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/textSurvey"
             android:text="Survey"
             android:textSize="12sp"
-            android:textColor="@color/pink_dark"
+            app:tint="@color/nav_inactive"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
-    <!-- Nearby care -->
+    <!-- Nearby -->
     <LinearLayout
+        android:id="@+id/navNearby"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -65,22 +71,25 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/iconNearby"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:src="@drawable/ic_nearby"
-            app:tint="@color/pink_dark"/>
+            app:tint="@color/nav_inactive"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/textNearby"
             android:text="Nearby care"
             android:textSize="12sp"
-            android:textColor="@color/pink_dark"
+            app:tint="@color/nav_inactive"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
     <!-- Chat -->
     <LinearLayout
+        android:id="@+id/navChat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -88,17 +97,19 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:id="@+id/iconChat"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:src="@drawable/ic_chat"
-            app:tint="@color/pink_dark"/>
+            app:tint="@color/nav_inactive"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/textChat"
             android:text="Chat"
             android:textSize="12sp"
-            android:textColor="@color/pink_dark"
+            app:tint="@color/nav_inactive"
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
