@@ -1,5 +1,6 @@
 package com.example.sakhi;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -9,15 +10,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.JsonObject;
 
+import java.util.Calendar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private static final String SUPABASE_KEY = "YOUR_SUPABASE_PUBLIC_KEY";
+    private static final String SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNic3Bxbm5tdWxsZXpscGJkemhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MTc4NDYsImV4cCI6MjA4NDM5Mzg0Nn0.H9p0LoBRWEgjKBRSfKg1DdwnCN7qV2dQCo2gVEL7DiU";
 
-    EditText etName, etAge, etHeight, etWeight, etCycle, etCondition;
+    EditText etName, etAge, etHeight, etWeight, etCycle, etCondition, etLastPeriod;
     MaterialButton btnSave;
 
     @Override
@@ -31,10 +34,31 @@ public class EditProfileActivity extends AppCompatActivity {
         etWeight = findViewById(R.id.etWeight);
         etCycle = findViewById(R.id.etCycle);
         etCondition = findViewById(R.id.etCondition);
+        etLastPeriod = findViewById(R.id.etLastPeriod);
+
         btnSave = findViewById(R.id.btnSave);
         findViewById(R.id.btnCancel).setOnClickListener(v -> finish());
 
+        etLastPeriod.setOnClickListener(v -> openDatePicker());
+
         btnSave.setOnClickListener(v -> saveProfile());
+    }
+
+    private void openDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+
+        new DatePickerDialog(
+                this,
+                (view, year, month, day) -> {
+                    String date = year + "-" +
+                            String.format("%02d", month + 1) + "-" +
+                            String.format("%02d", day);
+                    etLastPeriod.setText(date);
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        ).show();
     }
 
     private void saveProfile() {
@@ -42,18 +66,19 @@ public class EditProfileActivity extends AppCompatActivity {
         String userId = SessionManager.getUserId(this);
         String accessToken = SessionManager.getAccessToken(this);
 
+        if (userId == null || accessToken == null) {
+            Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (etName.getText().toString().isEmpty()
                 || etAge.getText().toString().isEmpty()
                 || etHeight.getText().toString().isEmpty()
                 || etWeight.getText().toString().isEmpty()
-                || etCycle.getText().toString().isEmpty()) {
+                || etCycle.getText().toString().isEmpty()
+                || etLastPeriod.getText().toString().isEmpty()) {
 
             Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (userId == null || accessToken == null) {
-            Toast.makeText(this, "Session expired", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -64,6 +89,7 @@ public class EditProfileActivity extends AppCompatActivity {
         body.addProperty("height_cm", Integer.parseInt(etHeight.getText().toString()));
         body.addProperty("weight_kg", Integer.parseInt(etWeight.getText().toString()));
         body.addProperty("menstrual_cycle_length", Integer.parseInt(etCycle.getText().toString()));
+        body.addProperty("last_period_date", etLastPeriod.getText().toString());
         body.addProperty("conditions", etCondition.getText().toString());
 
         SupabaseProfileApi api =
@@ -85,17 +111,25 @@ public class EditProfileActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(EditProfileActivity.this,
-                            "Failed to save profile",
-                            Toast.LENGTH_SHORT).show();
+                    try {
+                        String error = response.errorBody().string();
+                        Toast.makeText(EditProfileActivity.this,
+                                error,
+                                Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(EditProfileActivity.this,
+                                "Unknown error",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
+
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(EditProfileActivity.this,
                         t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
