@@ -68,23 +68,26 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (response.isSuccessful() && response.body() != null) {
 
-                        // ✅ SAVE SESSION HERE
                         String accessToken = response.body()
                                 .get("access_token").getAsString();
+
                         String refreshToken = response.body()
                                 .get("refresh_token").getAsString();
 
+                        // 🔹 GET USER ID FROM SUPABASE RESPONSE
+                        String userId = response.body()
+                                .getAsJsonObject("user")
+                                .get("id")
+                                .getAsString();
+
+                        // 🔹 SAVE EVERYTHING
                         SessionManager.saveSession(LoginActivity.this, accessToken, refreshToken);
+                        SessionManager.saveUserId(LoginActivity.this, userId);
 
-                        Toast.makeText(LoginActivity.this,
-                                "Login Successful!", Toast.LENGTH_SHORT).show();
-
-                        // Go to Home
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         finish();
-
-                    } else {
+                    }
+                    else {
                         Toast.makeText(LoginActivity.this,
                                 "Login Failed. Check email/password.",
                                 Toast.LENGTH_SHORT).show();
