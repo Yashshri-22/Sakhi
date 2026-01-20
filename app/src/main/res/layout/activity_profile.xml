@@ -57,19 +57,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="20dp">
+                android:orientation="vertical">
 
-            <!-- Fields -->
-            <include layout="@layout/item_profile_field"/>
+                <include
+                    android:id="@+id/fieldName"
+                    layout="@layout/item_profile_field"/>
 
-            <include layout="@layout/item_profile_field"/>
+                <include
+                    android:id="@+id/fieldAge"
+                    layout="@layout/item_profile_field"/>
 
-            <include layout="@layout/item_profile_field"/>
+                <include
+                    android:id="@+id/fieldHeight"
+                    layout="@layout/item_profile_field"/>
 
-            <include layout="@layout/item_profile_field"/>
+                <include
+                    android:id="@+id/fieldWeight"
+                    layout="@layout/item_profile_field"/>
 
-            <include layout="@layout/item_profile_field"/>
+                <include
+                    android:id="@+id/fieldCycle"
+                    layout="@layout/item_profile_field"/>
+
+                <include
+                    android:id="@+id/fieldCondition"
+                    layout="@layout/item_profile_field"/>
 
             </LinearLayout>
 
