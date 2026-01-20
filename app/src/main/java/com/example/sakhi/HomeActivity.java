@@ -2,7 +2,9 @@ package com.example.sakhi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.PopupMenu;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,43 +23,55 @@ public class HomeActivity extends AppCompatActivity {
         // Bottom navigation
         BottomNavHelper.setupBottomNav(this, R.id.navHome);
 
-        // Profile image click → menu
+        // Profile image click → custom menu
         imgProfile = findViewById(R.id.imgProfile);
         imgProfile.setOnClickListener(v -> showProfileMenu());
     }
 
     private void showProfileMenu() {
-        PopupMenu popupMenu = new PopupMenu(this, imgProfile);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_profile, popupMenu.getMenu());
 
-        popupMenu.setOnMenuItemClickListener(item -> {
-            int id = item.getItemId();
+        View menuView = getLayoutInflater()
+                .inflate(R.layout.layout_profile_menu, null);
 
-            if (id == R.id.menu_profile) {
-                startActivity(new Intent(this, ProfileActivity.class));
-                return true;
+        PopupWindow popupWindow = new PopupWindow(
+                menuView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                true
+        );
 
-            } else if (id == R.id.menu_reminders) {
-                startActivity(new Intent(this, RemainderActivity.class));
-                return true;
+        popupWindow.setElevation(20f);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
 
-            } else if (id == R.id.menu_logout) {
-                logoutUser();
-                return true;
-            }
-            return false;
+        // Show menu near profile image (adjust if needed)
+        popupWindow.showAsDropDown(imgProfile, -90, 20);
+
+        // Profile
+        menuView.findViewById(R.id.menuProfile).setOnClickListener(v -> {
+            popupWindow.dismiss();
+            startActivity(new Intent(this, ProfileActivity.class));
         });
 
-        popupMenu.show();
+        // Reminders
+        menuView.findViewById(R.id.menuReminders).setOnClickListener(v -> {
+            popupWindow.dismiss();
+            startActivity(new Intent(this, RemainderActivity.class));
+        });
+
+        // Logout
+        menuView.findViewById(R.id.menuLogout).setOnClickListener(v -> {
+            popupWindow.dismiss();
+            logoutUser();
+        });
     }
 
     private void logoutUser() {
-        // ✅ Clear Supabase session locally
+        // Clear Supabase session
         SessionManager.clearSession(this);
 
         Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
 
-        // Go to Login screen & clear back stack
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

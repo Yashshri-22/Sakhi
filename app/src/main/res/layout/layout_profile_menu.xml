@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/bg_profile_menu"
+    android:elevation="10dp">
+
+    <!-- Profile -->
+    <LinearLayout
+        android:id="@+id/menuProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_profile"
+            app:tint="@color/pink_primary"/>
+
+        <TextView
+            android:layout_marginStart="12dp"
+            android:text="Profile Details"
+            android:textColor="@color/pink_primary"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <View style="@style/MenuDivider"/>
+
+    <!-- Reminders -->
+    <LinearLayout
+        android:id="@+id/menuReminders"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_reminder"
+            app:tint="@color/pink_primary"/>
+
+        <TextView
+            android:layout_marginStart="12dp"
+            android:text="Reminders"
+            android:textColor="@color/pink_primary"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <View style="@style/MenuDivider"/>
+
+    <!-- Logout -->
+    <LinearLayout
+        android:id="@+id/menuLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_logout"
+            app:tint="@android:color/holo_red_dark"/>
+
+        <TextView
+            android:layout_marginStart="12dp"
+            android:text="Logout"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>
