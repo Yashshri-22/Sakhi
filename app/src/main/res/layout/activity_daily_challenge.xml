@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTitle"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/pink_dark"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/tvDesc"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="28dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAction1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Action"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/btn_gradient_signup"
+        app:backgroundTint="@null"
+        android:textColor="@android:color/white"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAction2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Action"
+        android:background="@drawable/btn_gradient_signup"
+        app:backgroundTint="@null"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>
