@@ -85,6 +85,14 @@ public class NearbyCareActivity extends AppCompatActivity {
         chipGynac.setOnClickListener(v -> { updateChipUI(chipGynac); filterByCategory("Gynecologist"); });
         chipGeneral.setOnClickListener(v -> { updateChipUI(chipGeneral); filterByCategory("General"); });
         chip247.setOnClickListener(v -> { updateChipUI(chip247); filterBy247(); });
+        BottomNavHelper.setupBottomNav(this, R.id.navNearby);
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
+        });
     }
 
     private void loadDemoData() {

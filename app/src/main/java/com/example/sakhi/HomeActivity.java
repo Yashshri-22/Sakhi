@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateDailyChallengeCard();
+        loadProfileImage();
     }
 
     private void showProfileMenu() {
@@ -169,6 +172,63 @@ public class HomeActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+    private void loadProfileImage() {
+
+        String userId = SessionManager.getUserId(this);
+        String accessToken = SessionManager.getAccessToken(this);
+
+        if (userId == null || accessToken == null) return;
+
+        SupabaseProfileApi api =
+                RetrofitClient.getClient().create(SupabaseProfileApi.class);
+
+        api.getProfile(
+                SUPABASE_KEY,
+                "Bearer " + accessToken,
+                "eq." + userId,
+                "*"
+        ).enqueue(new retrofit2.Callback<com.google.gson.JsonArray>() {
+
+            @Override
+            public void onResponse(
+                    retrofit2.Call<com.google.gson.JsonArray> call,
+                    retrofit2.Response<com.google.gson.JsonArray> response) {
+
+                if (response.isSuccessful()
+                        && response.body() != null
+                        && response.body().size() > 0) {
+
+                    JsonObject profile =
+                            response.body().get(0).getAsJsonObject();
+
+                    String imageUrl = profile.has("image_url")
+                            && !profile.get("image_url").isJsonNull()
+                            ? profile.get("image_url").getAsString()
+                            : "Not set";
+
+                    if (!imageUrl.equals("Not set")) {
+                        Glide.with(HomeActivity.this)
+                                .load(imageUrl + "?t=" + System.currentTimeMillis()) // cache buster
+                                .placeholder(R.drawable.profile_image)
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(
+                                        com.bumptech.glide.load.engine.DiskCacheStrategy.NONE
+                                )
+                                .into(imgProfile);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(
+                    retrofit2.Call<com.google.gson.JsonArray> call,
+                    Throwable t) {
+                // silent fail (same behaviour as profile)
+            }
+        });
+    }
+
 
 
     private void loadUserName() {
