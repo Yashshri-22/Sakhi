@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="#FCE4EC"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_person"
+            android:background="@drawable/ic_launcher_background"
+            android:backgroundTint="#F8BBD0"
+            android:padding="8dp"
+            app:shapeAppearanceOverlay="@style/CircleImage"
+            android:layout_marginEnd="16dp"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvFeedbackText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This helps me track my health."
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:layout_marginBottom="4dp"/>
+
+            <RatingBar
+                android:id="@+id/ratingBarSmall"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="5"
+                android:theme="@style/Widget.AppCompat.RatingBar"
+                android:progressTint="#FFD700"
+                android:secondaryProgressTint="#FFD700"
+                android:isIndicator="true" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
