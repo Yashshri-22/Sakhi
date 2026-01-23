@@ -69,24 +69,6 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/etCycle"
-                    android:hint="Cycle Length (days)"
-                    android:inputType="number"
-                    style="@style/ProfileInput"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/etLastPeriod"
-                    android:hint="Last Period Date"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@drawable/ic_calender"
-                    style="@style/ProfileInput"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/etCondition"
                     android:hint="Conditions (PCOS, Anemia)"
                     style="@style/ProfileInput"/>

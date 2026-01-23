@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_primary"
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnMyth"
+        android:text="Myth"
+        android:layout_width="match_parent"
+        app:backgroundTint="@null"
+        android:background="@drawable/btn_gradient_signup"
+        android:layout_height="48dp"/>
+
+    <Button
+        android:id="@+id/btnFact"
+        android:text="Fact"
+        android:layout_width="match_parent"
+        android:background="@drawable/btn_gradient_signup"
+        app:backgroundTint="@null"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:textColor="@color/pink_dark"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

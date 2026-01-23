@@ -33,8 +33,12 @@ public class RemainderActivity extends AppCompatActivity {
         Button btnAdd = findViewById(R.id.btnAddReminder);
         ImageView btnBack = findViewById(R.id.btn_back);
 
-        btnBack.setOnClickListener(v -> {
-            finish(); // standard Android back behavior
+       btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
         });
 
         btnAdd.setOnClickListener(v -> {

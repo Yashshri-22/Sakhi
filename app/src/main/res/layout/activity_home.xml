@@ -38,6 +38,7 @@
                     android:src="@drawable/logo_small" />
 
                 <TextView
+                    android:id="@+id/tvGreeting"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -49,8 +50,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgProfile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/profile_image"
                     android:contentDescription="Profile"
                     android:clickable="true"
@@ -60,15 +61,18 @@
             </LinearLayout>
 
             <include
+                android:id="@+id/trackSymptomsInclude"
                 layout="@layout/item_feeling_card" />
 
             <!-- 🔹 Welcome Text -->
             <TextView
+                android:id="@+id/tvWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="Welcome, xyz here are some tips for you!"
+                android:layout_marginBottom="12dp"
+                android:text="Welcome, xyz here are some fun health  tasks for you!"
                 android:textColor="@color/pink_primary"
                 android:textStyle="bold" />
 
@@ -76,7 +80,7 @@
             <include layout="@layout/item_tip_card" />
 
             <!-- 🔹 Tip Card 2 -->
-            <include layout="@layout/item_tip_card" />
+            <include layout="@layout/item_game_card" />
 
             <!-- 🔹 Popular Articles -->
             <LinearLayout

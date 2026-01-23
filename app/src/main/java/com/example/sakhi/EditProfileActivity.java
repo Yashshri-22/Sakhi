@@ -20,7 +20,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private static final String SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNic3Bxbm5tdWxsZXpscGJkemhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MTc4NDYsImV4cCI6MjA4NDM5Mzg0Nn0.H9p0LoBRWEgjKBRSfKg1DdwnCN7qV2dQCo2gVEL7DiU";
 
-    EditText etName, etAge, etHeight, etWeight, etCycle, etCondition, etLastPeriod;
+    EditText etName, etAge, etHeight, etWeight, etCondition;
     MaterialButton btnSave;
 
     @Override
@@ -32,33 +32,17 @@ public class EditProfileActivity extends AppCompatActivity {
         etAge = findViewById(R.id.etAge);
         etHeight = findViewById(R.id.etHeight);
         etWeight = findViewById(R.id.etWeight);
-        etCycle = findViewById(R.id.etCycle);
         etCondition = findViewById(R.id.etCondition);
-        etLastPeriod = findViewById(R.id.etLastPeriod);
 
         btnSave = findViewById(R.id.btnSave);
-        findViewById(R.id.btnCancel).setOnClickListener(v -> finish());
-
-        etLastPeriod.setOnClickListener(v -> openDatePicker());
-
+        findViewById(R.id.btnCancel).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
+        });
         btnSave.setOnClickListener(v -> saveProfile());
-    }
-
-    private void openDatePicker() {
-        Calendar calendar = Calendar.getInstance();
-
-        new DatePickerDialog(
-                this,
-                (view, year, month, day) -> {
-                    String date = year + "-" +
-                            String.format("%02d", month + 1) + "-" +
-                            String.format("%02d", day);
-                    etLastPeriod.setText(date);
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-        ).show();
     }
 
     private void saveProfile() {
@@ -74,9 +58,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (etName.getText().toString().isEmpty()
                 || etAge.getText().toString().isEmpty()
                 || etHeight.getText().toString().isEmpty()
-                || etWeight.getText().toString().isEmpty()
-                || etCycle.getText().toString().isEmpty()
-                || etLastPeriod.getText().toString().isEmpty()) {
+                || etWeight.getText().toString().isEmpty()) {
 
             Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
             return;
@@ -88,8 +70,6 @@ public class EditProfileActivity extends AppCompatActivity {
         body.addProperty("age", Integer.parseInt(etAge.getText().toString()));
         body.addProperty("height_cm", Integer.parseInt(etHeight.getText().toString()));
         body.addProperty("weight_kg", Integer.parseInt(etWeight.getText().toString()));
-        body.addProperty("menstrual_cycle_length", Integer.parseInt(etCycle.getText().toString()));
-        body.addProperty("last_period_date", etLastPeriod.getText().toString());
         body.addProperty("conditions", etCondition.getText().toString());
 
         SupabaseProfileApi api =

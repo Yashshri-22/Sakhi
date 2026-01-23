@@ -77,14 +77,6 @@
                     layout="@layout/item_profile_field"/>
 
                 <include
-                    android:id="@+id/fieldCycle"
-                    layout="@layout/item_profile_field"/>
-
-                <include
-                    android:id="@+id/fieldLastPeriod"
-                    layout="@layout/item_profile_field"/>
-
-                <include
                     android:id="@+id/fieldCondition"
                     layout="@layout/item_profile_field"/>
 

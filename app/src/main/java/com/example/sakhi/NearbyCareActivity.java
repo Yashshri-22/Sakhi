@@ -1,6 +1,5 @@
 package com.example.sakhi;
 
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.CancellationTokenSource;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,7 +51,7 @@ public class NearbyCareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_care);
-        BottomNavHelper.setupBottomNav(this, R.id.navNearby);
+
         // 1. Initialize Views
         recyclerView = findViewById(R.id.recyclerViewHospitals);
         searchBar = findViewById(R.id.etSearch);
@@ -60,7 +63,7 @@ public class NearbyCareActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fullList = new ArrayList<>();
 
-        // Load Demo Data first (so screen isn't empty)
+        // Load Demo Data first (so screen isn't empty while loading)
         loadDemoData();
 
         adapter = new HospitalAdapter(this, fullList);
@@ -77,85 +80,48 @@ public class NearbyCareActivity extends AppCompatActivity {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // 4. Chip Listeners (Fixed Logic)
-        chipAll.setOnClickListener(v -> {
-            updateChipUI(chipAll);
-            adapter.setFilteredList(fullList); // Show everything
-        });
-
-        chipGynac.setOnClickListener(v -> {
-            updateChipUI(chipGynac);
-            filterByCategory("Gynecologist");
-        });
-
-        chipGeneral.setOnClickListener(v -> {
-            updateChipUI(chipGeneral);
-            filterByCategory("General");
-        });
-
-        chip247.setOnClickListener(v -> {
-            updateChipUI(chip247);
-            filterBy247();
-        });
-
-        // 5. Map Click Listener
-        if (findViewById(R.id.mapCard) != null) {
-            findViewById(R.id.mapCard).setOnClickListener(v -> {
-                String uri = "geo:0,0?q=hospitals+near+me";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.setPackage("com.google.android.apps.maps");
-                try { startActivity(intent); }
-                catch (Exception e) { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/"))); }
-            });
-        }
+        // 4. Chip Listeners
+        chipAll.setOnClickListener(v -> { updateChipUI(chipAll); adapter.setFilteredList(fullList); });
+        chipGynac.setOnClickListener(v -> { updateChipUI(chipGynac); filterByCategory("Gynecologist"); });
+        chipGeneral.setOnClickListener(v -> { updateChipUI(chipGeneral); filterByCategory("General"); });
+        chip247.setOnClickListener(v -> { updateChipUI(chip247); filterBy247(); });
     }
 
     private void loadDemoData() {
         fullList.add(new HospitalModel("City Care Hospital", "2.5 km • Pimpri", true, "General", "A trusted general hospital providing 24/7 emergency care.", R.drawable.map_image));
         fullList.add(new HospitalModel("Sakhi Maternity Home", "3.0 km • Nigdi", true, "Gynecologist", "Specialized maternity care for women.", R.drawable.map_image));
         fullList.add(new HospitalModel("Dr. Anita's Clinic", "1.2 km • Akurdi", false, "Gynecologist", "Private clinic focusing on women's health.", R.drawable.map_image));
-        fullList.add(new HospitalModel("Aditya Birla Hospital", "4.0 km • Chinchwad", true, "General", "Multi-specialty hospital with trauma center.", R.drawable.map_image));
     }
 
     private void getCurrentLocation() {
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                    },
-                    100
-            );
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
             return;
         }
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(location -> {
-                    if (location != null) {
-                        userCurrentLocation = location;
+        // IMPROVED LOCATION REQUEST
+        // Uses 'getCurrentLocation' with High Accuracy instead of 'getLastLocation' which can be null
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.getToken())
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            userCurrentLocation = location;
+                            Toast.makeText(NearbyCareActivity.this, "Location Found! Fetching Hospitals...", Toast.LENGTH_SHORT).show();
 
-                        String query =
-                                "[out:json];node[\"amenity\"~\"hospital|clinic|doctors\"]" +
-                                        "(around:5000," + location.getLatitude() + "," +
-                                        location.getLongitude() + ");out;";
-
-                        try {
-                            String url = "https://overpass-api.de/api/interpreter?data=" +
-                                    java.net.URLEncoder.encode(query, "UTF-8");
-                            new FetchPlacesTask().execute(url);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            // Widen search to 10km (10000m) to ensure results
+                            String query = "[out:json];node[\"amenity\"~\"hospital|clinic|doctors\"](around:10000," + location.getLatitude() + "," + location.getLongitude() + ");out;";
+                            try {
+                                String url = "https://overpass-api.de/api/interpreter?data=" + java.net.URLEncoder.encode(query, "UTF-8");
+                                new FetchPlacesTask().execute(url);
+                            } catch (Exception e) { e.printStackTrace(); }
+                        } else {
+                            Toast.makeText(NearbyCareActivity.this, "Could not get location. Check GPS.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
 
     private class FetchPlacesTask extends AsyncTask<String, Void, String> {
         @Override
@@ -184,7 +150,9 @@ public class NearbyCareActivity extends AppCompatActivity {
 
             if (elements.length() > 0) {
                 fullList.clear(); // Found real data, remove demo data
-                Toast.makeText(NearbyCareActivity.this, "Found " + elements.length() + " places nearby", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NearbyCareActivity.this, "Found " + elements.length() + " hospitals", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(NearbyCareActivity.this, "No hospitals found nearby (Try increasing range)", Toast.LENGTH_SHORT).show();
             }
 
             for (int i = 0; i < elements.length(); i++) {
@@ -196,7 +164,7 @@ public class NearbyCareActivity extends AppCompatActivity {
                     double lat = place.getDouble("lat");
                     double lon = place.getDouble("lon");
 
-                    // 1. Calculate Distance
+                    // Distance Calc
                     String distanceStr = "Unknown dist";
                     if (userCurrentLocation != null) {
                         float[] results = new float[1];
@@ -204,20 +172,16 @@ public class NearbyCareActivity extends AppCompatActivity {
                         distanceStr = String.format("%.1f km", results[0] / 1000);
                     }
 
-                    // 2. SMART TYPE DETECTION (Broadened for better results)
+                    // Simple Categorization
                     String type = "General";
                     String lowerName = name.toLowerCase();
-
-                    if (lowerName.contains("women") || lowerName.contains("maternity") ||
-                            lowerName.contains("fertility") || lowerName.contains("mother") ||
-                            lowerName.contains("baby") || lowerName.contains("nursing") ||
-                            lowerName.contains("clinic") || lowerName.contains("lady")) {
-                        // We count generic "Clinics" as Gynecologist for this demo to ensure results show up
+                    if (lowerName.contains("women") || lowerName.contains("maternity") || lowerName.contains("clinic")) {
                         type = "Gynecologist";
                     }
 
                     boolean isVerified = tags.has("phone");
-                    String desc = "Real-time info from OpenStreetMap.\nAddress: " + tags.optString("addr:full", "See map");
+                    // Using 'addr:full' or generic map text
+                    String desc = tags.optString("addr:city", "Pimpri-Chinchwad");
 
                     fullList.add(new HospitalModel(name, distanceStr, isVerified, type, desc, R.drawable.map_image));
                 }
@@ -227,31 +191,19 @@ public class NearbyCareActivity extends AppCompatActivity {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    // --- FILTERS & CHIPS (Same as before) ---
     private void filterByCategory(String category) {
         List<HospitalModel> filteredList = new ArrayList<>();
-        boolean found = false;
-
         for (HospitalModel item : fullList) {
-            if (item.getType().equalsIgnoreCase(category)) {
-                filteredList.add(item);
-                found = true;
-            }
+            if (item.getType().equalsIgnoreCase(category)) filteredList.add(item);
         }
-
-        if (!found) {
-            Toast.makeText(this, "No " + category + " found nearby.", Toast.LENGTH_SHORT).show();
-        }
-
         adapter.setFilteredList(filteredList);
     }
 
     private void filterBy247() {
         List<HospitalModel> filteredList = new ArrayList<>();
         for (HospitalModel item : fullList) {
-            // Assume any "Hospital" is open 24/7 for demo purposes
-            if (item.getName().toLowerCase().contains("hospital")) {
-                filteredList.add(item);
-            }
+            if (item.getName().toLowerCase().contains("hospital")) filteredList.add(item);
         }
         adapter.setFilteredList(filteredList);
     }
@@ -277,6 +229,9 @@ public class NearbyCareActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) getCurrentLocation();
+        if (requestCode == 100 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            getCurrentLocation();
+        }
     }
 }
+

@@ -62,7 +62,13 @@ public class ChatActivity extends AppCompatActivity {
 
         // 3. Send Button Action
         btnSend.setOnClickListener(v -> sendMessage());
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
+        });
     }
 
     private void sendMessage() {

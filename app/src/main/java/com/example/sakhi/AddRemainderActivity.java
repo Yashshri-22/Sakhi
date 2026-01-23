@@ -78,8 +78,20 @@ public class AddRemainderActivity extends AppCompatActivity {
         // 3. Button Actions
         btnSet.setOnClickListener(v -> saveReminder());
 
-        btnCancel.setOnClickListener(v -> finish());
-        btnBack.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
+        });
+        btnBack.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
+        });
     }
 
     private void setupSpinners() {

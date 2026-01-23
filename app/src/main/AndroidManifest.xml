@@ -20,6 +20,44 @@
         android:theme="@style/Theme.Sakhi"
         tools:targetApi="31">
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="reset-password"
+                    android:scheme="sakhi" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DailyChallengeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditCycleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PeriodCalendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FeedbackListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SymptomSurveyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SymptomSummaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SymptomChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity

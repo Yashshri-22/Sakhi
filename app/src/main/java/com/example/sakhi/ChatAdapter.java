@@ -41,12 +41,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         // Styling logic
         if (chat.isUser) {
             // User Message (Right Side, Light Pink)
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#FCE4EC"));
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FADADD"));
             holder.layout.setGravity(Gravity.END);
-            holder.tvMessage.setTextColor(Color.BLACK);
+            holder.tvMessage.setTextColor(Color.parseColor("#4A2C2A"));
         } else {
             // AI Message (Left Side, Dark Pink)
-            holder.cardView.setCardBackgroundColor(Color.parseColor("#D81B60"));
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FB6F97"));
             holder.layout.setGravity(Gravity.START);
             holder.tvMessage.setTextColor(Color.WHITE);
         }

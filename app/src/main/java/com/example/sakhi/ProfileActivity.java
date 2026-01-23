@@ -41,7 +41,13 @@ public class ProfileActivity extends AppCompatActivity {
         profileImage.setOnClickListener(v -> openGallery());
 
         // Back arrow
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+        findViewById(R.id.btn_back).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(
+                    android.R.anim.slide_in_left,
+                    android.R.anim.slide_out_right
+            );
+        });
 
         // Edit profile button
         findViewById(R.id.btnEditProfile).setOnClickListener(v ->
@@ -176,10 +182,6 @@ public class ProfileActivity extends AppCompatActivity {
                     setField(R.id.fieldAge, "Age", get(profile, "age"));
                     setField(R.id.fieldHeight, "Height", get(profile, "height_cm") + " cm");
                     setField(R.id.fieldWeight, "Weight", get(profile, "weight_kg") + " kg");
-                    setField(R.id.fieldCycle, "Cycle Length",
-                            get(profile, "menstrual_cycle_length") + " days");
-                    setField(R.id.fieldLastPeriod, "Last Period Date",
-                            get(profile, "last_period_date"));
                     setField(R.id.fieldCondition, "Condition",
                             get(profile, "conditions"));
 
