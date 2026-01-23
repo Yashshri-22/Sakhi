@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SymptomSummaryActivity"
+    android:background="#FFFFFF">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/reminderToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/nav_bg"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/arrow_back"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Your Symptom Summary"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Your symptoms may be linked to common women's health conditions."
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/reminderToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:layout_marginHorizontal="12dp"
+        android:text="🌸 Early attention can help prevent long-term complications."
+        android:textAlignment="center"
+        android:textColor="#D81B60"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnHighlight"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_login_outline"
+        android:text="Highlighted Possible Conditions"
+        android:textAllCaps="false"
+        android:textColor="#D81B60"
+        app:backgroundTint="@null"
+        app:layout_constraintTop_toBottomOf="@+id/tvNote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardCondition"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="24dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
+        app:strokeColor="#D81B60"
+        app:strokeWidth="1.5dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnHighlight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_health"
+                app:tint="#D81B60"/>
+
+            <TextView
+                android:id="@+id/tvConditionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Analyzing..."
+                android:textColor="#D81B60"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvDisclaimer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"
+        android:text="⚠️ This information is for awareness only and is not a medical diagnosis."
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/cardCondition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnFindCare"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_margin="24dp"
+        android:background="@drawable/btn_gradient_signup"
+        android:text="Find Nearby Care"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
