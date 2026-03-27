@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -5,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-<!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
@@ -37,23 +37,18 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Content Wrapper -->
-
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:paddingTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar2"
         app:layout_constraintBottom_toTopOf="@+id/navCalendar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.392">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Month Navigation -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,73 +80,87 @@
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
 
-
-        <!-- Weekdays -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             android:weightSum="7">
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Sun" />
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Mon" />
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Tue" />
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Wed" />
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Thu" />
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Fri" />
-
-            <TextView
-                style="@style/DayHeader"
-                android:text="Sat" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Sun" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Mon" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Tue" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Wed" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Thu" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Fri" />
+            <TextView style="@style/DayHeader" android:layout_width="0dp" android:layout_weight="1" android:gravity="center" android:text="Sat" />
         </LinearLayout>
 
-        <!-- Calendar Grid -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendarRecycler"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
+            android:minHeight="280dp"
             android:overScrollMode="never" />
 
-        <!-- Next Period -->
         <TextView
             android:id="@+id/tvNextPeriod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:text="Next Period: --"
             android:textColor="#777777"
             android:textSize="14sp" />
 
-        <!-- CTA Button -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <LinearLayout android:layout_width="0dp" android:layout_columnWeight="1" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                <View android:layout_width="10dp" android:layout_height="10dp"
+                    android:background="@drawable/bg_day_period"
+                    app:backgroundTint="@null"
+                    android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Menstrual (Period)" android:textSize="11sp" android:textColor="#666666"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_columnWeight="1" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                <View android:layout_width="10dp" android:layout_height="10dp"
+                    android:background="@drawable/bg_day_fertile"
+                    app:backgroundTint="@null"
+                    android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Follicular (Pre-Egg)" android:textSize="11sp" android:textColor="#666666"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_columnWeight="1" android:gravity="center_vertical">
+                <View android:layout_width="10dp" android:layout_height="10dp"
+                    android:background="@drawable/bg_day_ovulation"
+                    app:backgroundTint="@null"
+                    android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ovulation (Release)" android:textSize="11sp" android:textColor="#666666"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_columnWeight="1" android:gravity="center_vertical">
+                <View android:layout_width="10dp" android:layout_height="10dp"
+                    android:background="@drawable/bg_day_luteal"
+                    app:backgroundTint="@null"
+                    android:layout_marginEnd="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Luteal (Preparation)" android:textSize="11sp" android:textColor="#666666"/>
+            </LinearLayout>
+        </GridLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEditCycle"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/btn_gradient_signup"
             android:text="Edit Cycle Details"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:backgroundTint="@null" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -162,7 +171,6 @@
         android:gravity="center"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent">
-
         <include layout="@layout/item_bottom_nav" />
     </LinearLayout>
 

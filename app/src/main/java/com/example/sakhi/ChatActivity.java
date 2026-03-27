@@ -1,6 +1,7 @@
 package com.example.sakhi;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -10,23 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.ai.client.generativeai.GenerativeModel;
-import com.google.ai.client.generativeai.java.GenerativeModelFutures;
-import com.google.ai.client.generativeai.type.Content;
-import com.google.ai.client.generativeai.type.GenerateContentResponse;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
-
-    // ▼▼▼ GET YOUR KEY FROM: aistudio.google.com ▼▼▼
-    private static final String API_KEY = "AIzaSyBuv1xnML3CcvkV_XGEneDmnU4fU-3RfTI";
 
     RecyclerView rvChat;
     EditText etMessage;
@@ -35,39 +27,33 @@ public class ChatActivity extends AppCompatActivity {
 
     ChatAdapter adapter;
     List<ChatMessage> chatList;
-    GenerativeModelFutures model;
+
+    // conversation history
+    List<Message> apiMessages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        BottomNavHelper.setupBottomNav(this, R.id.navChat);
+
         rvChat = findViewById(R.id.rvChat);
         etMessage = findViewById(R.id.etMessage);
         btnSend = findViewById(R.id.btnSend);
         btnBack = findViewById(R.id.btnBack);
 
-        // 1. Setup RecyclerView
         chatList = new ArrayList<>();
-        // Add a welcome message from AI
-        chatList.add(new ChatMessage("Hi! I am Sakhi. Ask me anything about women's health, diet, or fitness.", false));
+        // Professional Greeting
+        chatList.add(new ChatMessage("Namaste! I am Sakhi. How can I help you with your health today?", false));
 
         adapter = new ChatAdapter(chatList);
         rvChat.setLayoutManager(new LinearLayoutManager(this));
         rvChat.setAdapter(adapter);
 
-        // 2. Setup AI Model (Gemini Flash is fast and free)
-        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", API_KEY);
-        model = GenerativeModelFutures.from(gm);
-
-        // 3. Send Button Action
         btnSend.setOnClickListener(v -> sendMessage());
+
         btnBack.setOnClickListener(v -> {
             finish();
-            overridePendingTransition(
-                    android.R.anim.slide_in_left,
-                    android.R.anim.slide_out_right
-            );
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         });
     }
 
@@ -75,42 +61,52 @@ public class ChatActivity extends AppCompatActivity {
         String userQuery = etMessage.getText().toString().trim();
         if (userQuery.isEmpty()) return;
 
-        // Add User Message to List
         chatList.add(new ChatMessage(userQuery, true));
         adapter.notifyItemInserted(chatList.size() - 1);
         rvChat.scrollToPosition(chatList.size() - 1);
         etMessage.setText("");
 
-        // 4. THE PROMPT ENGINEERING (Strict Rules)
-        String strictPrompt = "You are a health assistant named Sakhi. " +
-                "You ONLY answer questions related to medical health, women's wellness, fitness, diet, PCOD/PCOS, and mental well-being. " +
-                "If the user asks about technology, coding, movies, politics, or general knowledge, " +
-                "strictly reply: 'I can only assist with health-related queries.' " +
-                "Do not answer off-topic questions. " +
-                "Here is the user's question: " + userQuery;
+        // 🔥 MULTILINGUAL SYSTEM PROMPT WITHOUT STARS
+        if (apiMessages.isEmpty()) {
+            String professionalPrompt = "You are Sakhi, a professional women's health triage assistant. " +
+                    "1. Respond ONLY in the language used by the user (English, Hindi, or Marathi). " +
+                    "2. NO FORMATTING: Do NOT use stars (*), hashtags (#), or bullet points (-). " +
+                    "3. STRUCTURE: Use plain paragraphs and simple numbering (1, 2, 3) if needed. " +
+                    "4. SCOPE: Only answer health, diet, and fitness queries. Otherwise, politely decline.";
 
-        // 5. Call AI
-        Content content = new Content.Builder().addText(strictPrompt).build();
-        Executor executor = Executors.newSingleThreadExecutor();
-        ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
+            apiMessages.add(new Message("system", professionalPrompt));
+        }
+        apiMessages.add(new Message("user", userQuery));
 
-        Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
-            @Override
-            public void onSuccess(GenerateContentResponse result) {
-                String aiReply = result.getText();
-                runOnUiThread(() -> {
-                    chatList.add(new ChatMessage(aiReply, false));
-                    adapter.notifyItemInserted(chatList.size() - 1);
-                    rvChat.scrollToPosition(chatList.size() - 1);
+        OpenRouterRequest request = new OpenRouterRequest("google/gemini-2.0-flash-001", apiMessages);
+
+        OpenRouterClient.getInterface().getChatCompletion("Bearer " + BuildConfig.OPENROUTER_KEY, request)
+                .enqueue(new Callback<OpenRouterResponse>() {
+                    @Override
+                    public void onResponse(Call<OpenRouterResponse> call, Response<OpenRouterResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            String aiReply = response.body().choices.get(0).message.content;
+
+                            // 🔥 STRING CLEANUP: Remove any accidental Markdown stars
+                            aiReply = aiReply.replace("*", "").trim();
+
+                            apiMessages.add(new Message("assistant", aiReply));
+
+                            String finalReply = aiReply;
+                            runOnUiThread(() -> {
+                                chatList.add(new ChatMessage(finalReply, false));
+                                adapter.notifyItemInserted(chatList.size() - 1);
+                                rvChat.scrollToPosition(chatList.size() - 1);
+                            });
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Connection Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OpenRouterResponse> call, Throwable t) {
+                        Toast.makeText(ChatActivity.this, "Network Failure", Toast.LENGTH_SHORT).show();
+                    }
                 });
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                runOnUiThread(() -> {
-                    Toast.makeText(ChatActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            }
-        }, executor);
     }
 }
